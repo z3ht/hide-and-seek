@@ -15,31 +15,44 @@ public class AppBoard {
 	private List<BoardItem> boardItemList;
 	private Dimension boardSize;
 	
-	public AppBoard(App app, Player player) {
+	public AppBoard(App app, Function<Dimension, Player> playerCreator) {
 		this.app = app;
 		this.boardSize = new Dimension(10000, 10000);
-		this.player = player;
+		this.player = playerCreator.apply(boardSize);
 		this.boardItemList = new ArrayList<>();
+		
+		addBoardItem(player);
 	}
 	
 	public void paint(Graphics g) {
-		drawBackground(g);
+		Graphics2D g2d = (Graphics2D) g.create();
+		
+		RenderingHints hints = new RenderingHints(
+				RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON
+		);
+		
+		g2d.setRenderingHints(hints);
+		
+		drawBackground(g2d);
 		for(BoardItem item : boardItemList)
 			if(item.isVisible(app.getToolkit().getScreenSize()))
-				item.paint(g);
+				item.paint(g2d);
+		
+		g2d.dispose();
 	}
 	
-	public void drawBackground(Graphics g) {
-		g.setColor(new Color(220, 220, 220));
-		int fillSize = 2;
-		int seperationDist = 36;
+	public void drawBackground(Graphics2D g2d) {
+		g2d.setColor(new Color(230, 230, 230));
+		int fillSize = 1;
+		int separationDist = 25;
 		// horizontal lines
-		for(int y = (int) getPlayer().getLocation().getY() % seperationDist; y < app.getSize().height; y += seperationDist)
-			g.fillRect(0, y, app.getSize().width, fillSize);
+		for(int y = (int) getPlayer().getLocation().getY() % separationDist; y < app.getSize().height; y += separationDist)
+			g2d.fillRect(0, y, app.getSize().width, fillSize);
 		
 		// vertical lines
-		for(int x = (int) getPlayer().getLocation().getX() % seperationDist;x < app.getSize().width; x += seperationDist)
-			g.fillRect(x, 0, fillSize, app.getSize().height);
+		for(int x = (int) getPlayer().getLocation().getX() % separationDist;x < app.getSize().width; x += separationDist)
+			g2d.fillRect(x, 0, fillSize, app.getSize().height);
 	}
 	
 	public void addBoardItem(BoardItem item) {
@@ -48,10 +61,6 @@ public class AppBoard {
 	
 	public void delBoardItem(BoardItem item) {
 		boardItemList.remove(item);
-	}
-	
-	public Dimension getBoardSize() {
-		return boardSize;
 	}
 	
 	public List<BoardItem> getBoardItemList() {

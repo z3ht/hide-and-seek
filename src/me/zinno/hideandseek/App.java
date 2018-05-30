@@ -10,11 +10,13 @@ public class App extends JFrame {
 	
 	private final AppPanel appPanel;
 	private final AppRunner appRunner;
+	private final ColorScheme colorScheme;
 	
-	public App(Function<App, AppRunner> runnerCreator, Function<App, AppPanel> panelCreator, int refreshRate) {
+	public App(Function<App, AppRunner> runnerCreator, Function<App, AppPanel> panelCreator, ColorScheme colorScheme, int refreshRate) {
 		createDefaultSettings();
-		this.appPanel = panelCreator.apply(this);
 		this.appRunner = runnerCreator.apply(this);
+		this.appPanel = panelCreator.apply(this);
+		this.colorScheme = colorScheme;
 		add(appPanel);
 	}
 	
@@ -30,8 +32,15 @@ public class App extends JFrame {
 		new Thread(appRunner).run();
 	}
 	
+	public ColorScheme getColorScheme() {
+		return colorScheme;
+	}
+	
 	public AppPanel getAppPanel() {
 		return appPanel;
 	}
 	
+	public AppRunner getAppRunner() {
+		return appRunner;
+	}
 }

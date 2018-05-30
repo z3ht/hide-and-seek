@@ -5,6 +5,6 @@ import java.awt.*;
 public interface BoardItem {
 	
 	boolean isVisible(Dimension viewBox);
-	void paint(Graphics g);
+	void paint(Graphics2D g2d);
 	
 }

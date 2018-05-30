@@ -9,6 +9,6 @@ public class HideAndSeekBoard extends AppBoard {
 	
 	
 	public HideAndSeekBoard(App app) {
-		super(app, new Dimension(10000, 10000), new Player(app, ));
+		super(app, boardSize -> new Player(app, boardSize));
 	}
 }

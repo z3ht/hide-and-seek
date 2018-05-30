@@ -10,12 +10,10 @@ public abstract class AppPanel extends JPanel {
 	
 	private App app;
 	private AppBoard board;
-	private Point position;
 	
 	public AppPanel(App app, AppBoard appBoard) {
 		this.app = app;
 		this.board = appBoard;
-		this.position = new Point(board.getBoardSize().width/2, board.getBoardSize().height/2);
 		
 		createDefaultSettings();
 		
