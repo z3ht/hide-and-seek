@@ -14,7 +14,8 @@ public class HideAndSeek extends App {
 				new ColorScheme(
 						Color.DARK_GRAY,
 						Color.ORANGE,
-						Color.RED
+						Color.BLUE,
+						new Color(248,248,248)
 				),
 				refreshRate
 		);
@@ -25,7 +26,7 @@ public class HideAndSeek extends App {
 		super.createDefaultSettings();
 		setTitle("Hide and Seek");
 		setIconImage(this.getToolkit().getImage(this.getClass().getResource("treasure.png")));
-//		setUndecorated(true);
+		setUndecorated(true);
 	}
 	
 	public static void main(String[] args) {

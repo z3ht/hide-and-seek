@@ -1,7 +1,10 @@
 package me.zinno.hideandseek.boards;
 
 import me.zinno.hideandseek.App;
-import me.zinno.hideandseek.player.Player;
+import me.zinno.hideandseek.boards.border.AppBorder;
+import me.zinno.hideandseek.boards.border.SquareBorder;
+import me.zinno.hideandseek.boards.items.BoardItem;
+import me.zinno.hideandseek.boards.items.player.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,12 +16,12 @@ public class AppBoard {
 	private App app;
 	private Player player;
 	private List<BoardItem> boardItemList;
-	private Dimension boardSize;
+	private AppBorder border;
 	
-	public AppBoard(App app, Function<Dimension, Player> playerCreator) {
+	public AppBoard(App app, Function<Point, Player> playerCreator) {
 		this.app = app;
-		this.boardSize = new Dimension(10000, 10000);
-		this.player = playerCreator.apply(boardSize);
+		this.border = new SquareBorder(app);
+		this.player = playerCreator.apply(border.getPlayerStartPos());
 		this.boardItemList = new ArrayList<>();
 		
 		addBoardItem(player);
@@ -34,18 +37,22 @@ public class AppBoard {
 		
 		g2d.setRenderingHints(hints);
 		
+		border.paint(g2d);
+		
 		drawBackground(g2d);
 		for(BoardItem item : boardItemList)
-			if(item.isVisible(app.getToolkit().getScreenSize()))
+			if(item.isVisible(player.getLocation(), app.getSize()))
 				item.paint(g2d);
 		
 		g2d.dispose();
 	}
 	
 	public void drawBackground(Graphics2D g2d) {
-		g2d.setColor(new Color(230, 230, 230));
+		Color background = app.getColorScheme().getBackground();
+		g2d.setColor(new Color(background.getRed() - 30, background.getGreen() - 30, background.getBlue() - 30));
 		int fillSize = 1;
 		int separationDist = 25;
+		
 		// horizontal lines
 		for(int y = (int) getPlayer().getLocation().getY() % separationDist; y < app.getSize().height; y += separationDist)
 			g2d.fillRect(0, y, app.getSize().width, fillSize);
@@ -69,5 +76,9 @@ public class AppBoard {
 	
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public AppBorder getBorder() {
+		return border;
 	}
 }

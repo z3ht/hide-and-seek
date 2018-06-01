@@ -14,9 +14,9 @@ public class App extends JFrame {
 	
 	public App(Function<App, AppRunner> runnerCreator, Function<App, AppPanel> panelCreator, ColorScheme colorScheme, int refreshRate) {
 		createDefaultSettings();
+		this.colorScheme = colorScheme;
 		this.appRunner = runnerCreator.apply(this);
 		this.appPanel = panelCreator.apply(this);
-		this.colorScheme = colorScheme;
 		add(appPanel);
 	}
 	

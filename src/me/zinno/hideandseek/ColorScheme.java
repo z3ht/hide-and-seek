@@ -8,10 +8,13 @@ public class ColorScheme {
 	private Color secondary;
 	private Color tertiary;
 	
-	public ColorScheme(Color primary, Color secondary, Color tertiary) {
+	private Color background;
+	
+	public ColorScheme(Color primary, Color secondary, Color tertiary, Color background) {
 		this.primary = primary;
 		this.secondary = secondary;
 		this.tertiary = tertiary;
+		this.background = background;
 	}
 	
 	public Color getPrimary() {
@@ -38,4 +41,11 @@ public class ColorScheme {
 		this.tertiary = tertiary;
 	}
 	
+	public void setBackground(Color background) {
+		this.background = background;
+	}
+	
+	public Color getBackground() {
+		return background;
+	}
 }

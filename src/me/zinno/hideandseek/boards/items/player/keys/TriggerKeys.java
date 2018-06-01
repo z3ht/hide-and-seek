@@ -1,4 +1,4 @@
-package me.zinno.hideandseek.player.keys;
+package me.zinno.hideandseek.boards.items.player.keys;
 
 public class TriggerKeys {
 	

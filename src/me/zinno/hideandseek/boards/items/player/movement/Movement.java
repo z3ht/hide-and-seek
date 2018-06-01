@@ -1,6 +1,6 @@
-package me.zinno.hideandseek.player.movement;
+package me.zinno.hideandseek.boards.items.player.movement;
 
-import me.zinno.hideandseek.player.keys.TriggerKeys;
+import me.zinno.hideandseek.boards.items.player.keys.TriggerKeys;
 import me.zinno.hideandseek.util.Pair;
 
 import java.util.Set;

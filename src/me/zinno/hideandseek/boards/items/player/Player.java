@@ -1,9 +1,10 @@
-package me.zinno.hideandseek.player;
+package me.zinno.hideandseek.boards.items.player;
 
 import me.zinno.hideandseek.App;
-import me.zinno.hideandseek.boards.BoardItem;
-import me.zinno.hideandseek.player.keys.TriggerKeys;
-import me.zinno.hideandseek.player.movement.Movement;
+import me.zinno.hideandseek.boards.border.AppBorder;
+import me.zinno.hideandseek.boards.items.BoardItem;
+import me.zinno.hideandseek.boards.items.player.keys.TriggerKeys;
+import me.zinno.hideandseek.boards.items.player.movement.Movement;
 import me.zinno.hideandseek.updaters.Updatable;
 import me.zinno.hideandseek.util.Pair;
 
@@ -23,12 +24,10 @@ public class Player implements BoardItem, KeyListener, Updatable {
 	
 	private Movement movement;
 	
-	public Player(App app, Dimension boardSize) {
+	public Player(App app, Point startPos) {
 		this.app = app;
-		this.location = new Point((int) boardSize.getWidth()/2, (int) boardSize.getHeight()/2);
+		this.location = startPos;
 		this.playerSize = new Dimension(100, 100);
-		
-		
 		this.triggeredKeysTypeSet = new HashSet<>();
 		this.triggerKeysArray = new TriggerKeys[] {
 				new TriggerKeys(TriggerKeys.Type.UP, KeyEvent.VK_W, KeyEvent.VK_UP),
@@ -44,7 +43,7 @@ public class Player implements BoardItem, KeyListener, Updatable {
 	}
 	
 	@Override
-	public boolean isVisible(Dimension viewBox) {
+	public boolean isVisible(Point playerLoct, Dimension viewBox) {
 		return true;
 	}
 	
@@ -85,12 +84,12 @@ public class Player implements BoardItem, KeyListener, Updatable {
 	
 	public void update() {
 		Pair<Integer, Integer> velChange = movement.calculateVelChange(triggeredKeysTypeSet);
-		this.location = new Point(
+		Point desiredLocation = new Point(
 				location.x - velChange.getLeft(),
 				location.y + velChange.getRight()
 		);
-		
-		System.out.println(location.getX() + "\t\t" + location.getY());
+		AppBorder border = app.getAppPanel().getBoard().getBorder();
+		this.location = (border.exists()) ? border.checkLocation(desiredLocation) : desiredLocation;
 	}
 	
 	@Override

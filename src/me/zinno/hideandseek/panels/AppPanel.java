@@ -21,7 +21,7 @@ public abstract class AppPanel extends JPanel {
 	}
 	
 	private void createDefaultSettings() {
-		setBackground(new Color(248,248,248));
+		setBackground(app.getColorScheme().getBackground());
 		setFocusable(true);
 	}
 	
