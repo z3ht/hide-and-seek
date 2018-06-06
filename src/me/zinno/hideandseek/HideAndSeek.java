@@ -26,7 +26,7 @@ public class HideAndSeek extends App {
 		super.createDefaultSettings();
 		setTitle("Hide and Seek");
 		setIconImage(this.getToolkit().getImage(this.getClass().getResource("treasure.png")));
-		setUndecorated(true);
+//		setUndecorated(true);
 	}
 	
 	public static void main(String[] args) {

@@ -98,4 +98,8 @@ public class Player implements BoardItem, KeyListener, Updatable {
 	public Point getLocation() {
 		return location;
 	}
+	
+	public Dimension getSize() {
+		return playerSize;
+	}
 }

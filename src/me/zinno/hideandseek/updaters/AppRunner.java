@@ -4,6 +4,8 @@ import me.zinno.hideandseek.App;
 
 import javax.swing.*;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class AppRunner implements Runnable {
@@ -11,11 +13,14 @@ public class AppRunner implements Runnable {
 	private final JFrame game;
 	private final int threadSpeed;
 	private final Set<Updatable> updatableSet;
+	private Object lock;
 	
 	public AppRunner(Integer threadSpeed, App game) {
 		this.game = game;
 		this.threadSpeed = threadSpeed;
 		this.updatableSet = new HashSet<>();
+		this.lock = new Object();
+		
 	}
 	
 	public final void run() {
@@ -36,8 +41,10 @@ public class AppRunner implements Runnable {
 	
 	public synchronized void onRun() {
 		game.repaint();
-		for(Updatable updatable : updatableSet)
-			updatable.update();
+		synchronized (lock) {
+			for (Updatable updatable : updatableSet)
+				updatable.update();
+		}
 	}
 	
 	public synchronized void onException(Exception e) {
@@ -49,11 +56,15 @@ public class AppRunner implements Runnable {
 	}
 	
 	public void addUpdatable(Updatable updatable) {
-		updatableSet.add(updatable);
+		synchronized (lock) {
+			updatableSet.add(updatable);
+		}
 	}
 	
 	public void delUpdatable(Updatable updatable) {
-		updatableSet.remove(updatable);
+		synchronized (lock) {
+			updatableSet.add(updatable);
+		}
 	}
 	
 }

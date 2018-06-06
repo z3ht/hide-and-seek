@@ -11,7 +11,7 @@ public class SquareBorder implements AppBorder {
 	
 	public SquareBorder(App app) {
 		this.app = app;
-		this.boardSize = new Dimension(1000, 1000);
+		this.boardSize = new Dimension(3000, 2000);
 	}
 	
 	@Override

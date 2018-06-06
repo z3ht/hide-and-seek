@@ -17,14 +17,14 @@ public class AppBoard {
 	private Player player;
 	private List<BoardItem> boardItemList;
 	private AppBorder border;
+	private Object lock;
 	
 	public AppBoard(App app, Function<Point, Player> playerCreator) {
 		this.app = app;
 		this.border = new SquareBorder(app);
 		this.player = playerCreator.apply(border.getPlayerStartPos());
 		this.boardItemList = new ArrayList<>();
-		
-		addBoardItem(player);
+		this.lock = new Object();
 	}
 	
 	public void paint(Graphics g) {
@@ -35,14 +35,18 @@ public class AppBoard {
 				RenderingHints.VALUE_ANTIALIAS_ON
 		);
 		
-		g2d.setRenderingHints(hints);
-		
 		border.paint(g2d);
-		
 		drawBackground(g2d);
-		for(BoardItem item : boardItemList)
-			if(item.isVisible(player.getLocation(), app.getSize()))
-				item.paint(g2d);
+		
+		g2d.setRenderingHints(hints);
+		synchronized (lock) {
+			for (BoardItem item : boardItemList)
+				if (item.isVisible(player.getLocation(), app.getSize()))
+					item.paint(g2d);
+		}
+		
+		if(player.isVisible(player.getLocation(), app.getSize()))
+			player.paint(g2d);
 		
 		g2d.dispose();
 	}
@@ -63,11 +67,15 @@ public class AppBoard {
 	}
 	
 	public void addBoardItem(BoardItem item) {
-		boardItemList.add(item);
+		synchronized (lock) {
+			boardItemList.add(item);
+		}
 	}
 	
 	public void delBoardItem(BoardItem item) {
-		boardItemList.remove(item);
+		synchronized (lock) {
+			boardItemList.remove(item);
+		}
 	}
 	
 	public List<BoardItem> getBoardItemList() {
@@ -81,4 +89,5 @@ public class AppBoard {
 	public AppBorder getBorder() {
 		return border;
 	}
+	
 }

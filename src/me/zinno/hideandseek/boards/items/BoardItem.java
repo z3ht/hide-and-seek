@@ -8,7 +8,12 @@ public interface BoardItem {
 	
 	void paint(Graphics2D g2d);
 	
-	boolean test(Point playerLoc);
-	
+	static Point locationRelativeToAnchor(Point point, Point anchor) {
+		Point returnVal = new Point(
+				point.x - anchor.x,
+				point.y - anchor.y
+		);
+		return returnVal;
+	}
 	
 }
